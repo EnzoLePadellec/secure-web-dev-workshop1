@@ -112,7 +112,11 @@ function getFilmLocationsByFilm () {
 			'locations': valeurs[i],
 		});
 	}
-	array.sort()
+
+	array.sort(function(a,b){
+		return b.locations - a.locations
+	});	
+
 	return array;
 
 }
