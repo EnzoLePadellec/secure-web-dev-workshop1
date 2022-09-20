@@ -32,15 +32,15 @@ console.log(sortFilmingLocationsByStartDate())
 // 1. Make the function return the number of filming locations in 2020 only
 // 2. Log the result
 function getFilmingLocationsNumber2020 () {
-	let count = 0
-	for (const film in filmingLocations){
-		if(film.fields.annee_tournage == '2020'){
-			count = count + 1;
+	let film2020 = [];
+	for (let i = 0; i<filmingLocations.length;i++){
+		if(filmingLocations[i].fields.annee_tournage === '2020'){
+			film2020.push(filmingLocations[i]);
 		}
 	}
-	return count;
+	return film2020.length;
 }
-console.log(sortFilmingLocationsByStartDate() + " films ont été tournés en 2020")
+console.log(getFilmingLocationsNumber2020() + " films ont été tournés en 2020")
 
 // 📝 TODO: Number of filming locations per year
 // 1. Implement the function, the expected result is an object with years as
@@ -51,9 +51,18 @@ console.log(sortFilmingLocationsByStartDate() + " films ont été tournés en 20
 //    }
 // 2. Log the result
 function getFilmingLocationsNumberPerYear () {
-	return {}
+	var dict = {};
+	for(let i =0; i<filmingLocations.length;i++){
+		if(dict[filmingLocations[i].fields.annee_tournage]!= null){
+			dict[filmingLocations[i].fields.annee_tournage] +=1;
+		}
+		else{
+			dict[filmingLocations[i].fields.annee_tournage] = 1
+		}	
+	}
+	return dict
 }
-console.log()
+console.log(getFilmingLocationsNumberPerYear())
 
 // 📝 TODO: Number of filming locations by district (arrondissement)
 // 1. Implement the function, the expected result is an object with
@@ -64,25 +73,67 @@ console.log()
 //    }
 // 2. Log the result
 function getFilmingLocationsNumberPerDistrict () {
-	return {}
+	var dict = {};
+	for(let i =0; i<filmingLocations.length;i++){
+		if(dict[filmingLocations[i].fields.ardt_lieu]!= null){
+			dict[filmingLocations[i].fields.ardt_lieu] +=1;
+		}
+		else{
+			dict[filmingLocations[i].fields.ardt_lieu] = 1
+		}	
+	}
+	return dict
 }
-console.log()
+console.log(getFilmingLocationsNumberPerDistrict ())
 
 // 📝 TODO: Number of locations per film, sorted in descending order
 // 1. Implement the function, result expected as an array of object like:
 //    const result = [{film: 'LRDM - Patriot season 2', locations: 12}, {...}]
 // 2. Log the first and last item of the array
 function getFilmLocationsByFilm () {
-	return []
+
+	var dict = {};
+	for(let i =0; i<filmingLocations.length;i++){
+		if(dict[filmingLocations[i].fields.nom_tournage]!= null){
+			dict[filmingLocations[i].fields.nom_tournage] +=1;
+		}
+		else{
+			dict[filmingLocations[i].fields.nom_tournage] = 1
+		}	
+	}
+
+	var array = [];
+
+	let clés = Object.keys(dict);
+	let valeurs = Object.values(dict);
+	for(let i = 0; i < clés.length; i++){
+		array.push({
+			'films': clés[i],
+			'locations': valeurs[i],
+		});
+	}
+	array.sort()
+	return array;
+
 }
-console.log()
+console.log(getFilmLocationsByFilm()[0])
+console.log("est le premier élément.")
+
+console.log(getFilmLocationsByFilm()[getFilmLocationsByFilm().length-1])
+console.log("est le dernier élément.")
 
 // 📝 TODO: Number of different films
 // 1. Implement the function
 // 2. Log the result
 function getNumberOfFilms() {
-	return ''
+	var set = new Set();
+	for(let i =0; i<filmingLocations.length;i++){
+		set.add(filmingLocations[i].fields.nom_tournage);	
+	}
+	return set.size
 }
+
+console.log("Il y a " + getNumberOfFilms() + " films différents.")
 
 // 📝 TODO: All the filming locations of `LRDM - Patriot season 2`
 // 1. Return an array with all filming locations of LRDM - Patriot season 2
