@@ -26,6 +26,7 @@ function sortFilmingLocationsByStartDate () {
 	const test = filmingLocations.sort(function(a,b){ return new Date(a.fields.date_debut) - new Date(b.fields.date_debut);});
 	return test[0];
 }
+
 console.log(sortFilmingLocationsByStartDate())
 
 // 📝 TODO: Number of filming locations in 2020 only
@@ -40,6 +41,7 @@ function getFilmingLocationsNumber2020 () {
 	}
 	return film2020.length;
 }
+
 console.log(getFilmingLocationsNumber2020() + " films ont été tournés en 2020")
 
 // 📝 TODO: Number of filming locations per year
@@ -62,7 +64,12 @@ function getFilmingLocationsNumberPerYear () {
 	}
 	return dict
 }
-console.log(getFilmingLocationsNumberPerYear())
+
+console.log("Nombre de films par année : ")
+var filmLocationPerYear = getFilmingLocationsNumberPerYear()
+for(var key in filmLocationPerYear){
+	console.log(key + " : " + filmLocationPerYear[key])
+}
 
 // 📝 TODO: Number of filming locations by district (arrondissement)
 // 1. Implement the function, the expected result is an object with
@@ -84,6 +91,12 @@ function getFilmingLocationsNumberPerDistrict () {
 	}
 	return dict
 }
+
+console.log("Nombre de films par arrondissement : ")
+var filmLocationPerDistrict = getFilmingLocationsNumberPerDistrict ()
+for(var key in filmLocationPerDistrict){
+	console.log(key + " : " + filmLocationPerDistrict[key])
+}
 console.log(getFilmingLocationsNumberPerDistrict ())
 
 // 📝 TODO: Number of locations per film, sorted in descending order
@@ -103,7 +116,6 @@ function getFilmLocationsByFilm () {
 	}
 
 	var array = [];
-
 	let clés = Object.keys(dict);
 	let valeurs = Object.values(dict);
 	for(let i = 0; i < clés.length; i++){
@@ -161,17 +173,18 @@ console.log("Les différents lieu de tournage de LRDM - Patriot Season 2 sont : 
 //    const films = { 'LRDM - Patriot season 2': ['75013'] }
 // 2. Log the result
 function getFavoriteFilmsLocations (favoriteFilmsNames) {
-	let favorite = [];
+	let film = {}
 	for(const location of filmingLocations) {
-		for(let i=0;i<favoriteFilmsNames.length;i++){
-			if(location.fields.nom_tournage ==favoriteFilmsNames[i]){
-				if(filmingLocations.indexOf(location.fields.nom_tournage)==-1 && favorite.indexOf(location.fields.ardt_lieu)==-1){
-					favorite.push(location.fields.ardt_lieu);
-				}
+		if(favoriteFilmsNames.includes(location.fields.nom_tournage)==true)
+		{
+			if(film[location.fields.nom_tournage]==undefined)
+			{
+				film[location.fields.nom_tournage] = new Set()
 			}
+			film[location.fields.nom_tournage].add(location.fields.ardt_lieu)
 		}
 	}
-	return favorite;
+	return film;
 }
 
 const favoriteFilms =
@@ -181,7 +194,14 @@ const favoriteFilms =
 		'Emily in Paris',
 	];
 
-console.log("Les lieux de tournages de nos films favoris sont : "+getFavoriteFilmsLocations(favoriteFilms));
+const favorite = getFavoriteFilmsLocations(favoriteFilms)
+console.log("Les lieux de tournages de nos films favoris sont : ");
+for(var key in favorite){
+	console.log(key + " : " + favorite[key])
+	for(let i of favorite[key]){
+		console.log(i)
+	}
+}
 
 // 📝 TODO: All filming locations for each film
 //     e.g. :
@@ -202,7 +222,10 @@ function getFilmingLocationsPerFilm () {
 	return films;
 }
 
-console.log(getFilmingLocationsPerFilm());
+const locationPerFilm = getFilmingLocationsPerFilm();
+for(var key in locationPerFilm){
+	console.log(key + " : " + locationPerFilm[key])
+}
 
 // 📝 TODO: Count each type of film (Long métrage, Série TV, etc...)
 // 1. Implement the function
@@ -227,7 +250,11 @@ function countFilmingTypes () {
 	return numberPerTypes
 }
 
-console.log(countFilmingTypes())
+console.log("The different type of film:")
+const filmType = countFilmingTypes()
+for(var key in filmType){
+	console.log(key + " : " + filmType[key])
+}
 
 // 📝 TODO: Sort each type of filming by count, from highest to lowest
 // 1. Implement the function. It should return a sorted array of objects like:
@@ -243,7 +270,13 @@ function sortedCountFilmingTypes () {
 	return sortedCountTypes
 }
 
-console.log(sortedCountFilmingTypes())
+const sortedFilmType = sortedCountFilmingTypes()
+for(let i of sortedFilmType)
+{
+	for(var key in i){
+		console.log(key + " : " + i[key])
+	}
+}
 
 /**
  * This arrow functions takes a duration in milliseconds and returns a
